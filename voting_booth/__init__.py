@@ -4,9 +4,9 @@ app = Flask(__name__)
 
 # load modules here
 from voting_booth.main import main
-from voting_booth.addons.user.module import user
-from voting_booth.addons.vote.module import vote
-from voting_booth.addons.results.module import results
+from voting_booth.modules.user.module import user
+from voting_booth.modules.vote.module import vote
+from voting_booth.modules.results.module import results
 
 # top-level API endpoints
 app.register_blueprint(main, url_prefix='/')
