@@ -1,7 +1,7 @@
 {
   "config": [
     {
-      "usersDb": "~/users.db"
+      "usersDb": "databases/users.db"
     }
   ]
 }

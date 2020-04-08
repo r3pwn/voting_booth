@@ -1,6 +1,9 @@
 # ignore all python cache folders
 __pycache__
 
+# ignore all databases
+databases/*.db
+
 # ignore all macOS Finder junk files
 .DS_Store
 .AppleDouble

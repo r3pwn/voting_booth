@@ -9,8 +9,12 @@ and be sure that we have the `flask` pip module installed:
 
 `pip3 install flask`
 
+## Setting up the databases
+We must first set up the databases by running:
+
+`./databases/setup_databases.py`
 
 ## Starting the server
-We can now start the server by running:
+Finally, we can now start the server by running:
 
 `./server.py`
