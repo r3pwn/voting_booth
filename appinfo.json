@@ -2,6 +2,7 @@
   "appinfo": [
     {
       "name": "voting-booth-api",
+      "security": "insecure",
       "version": "v0.0.1",
       "authors": [
         "Greg Willard <gwillard4695@floridapoly.edu>", 
