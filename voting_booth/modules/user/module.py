@@ -1,7 +1,10 @@
 from flask import Blueprint, request
 import os
 import json
+import uuid
 import sqlite3
+import hashlib
+import binascii
 
 CONFIG_FILE = 'voting_booth/modules/user/config.json'
 user = Blueprint('user', __name__)
@@ -9,41 +12,113 @@ user = Blueprint('user', __name__)
 with open(CONFIG_FILE) as json_file:
     config = json.load(json_file)['config'][0]
 
-conn = sqlite3.connect(config['usersDb'])
-c = conn.cursor()
-
-@user.route('/login')
+@user.route('/login', methods = ['POST'])
 def user_login():
-    # TODO: implement hashing and verification here
-    return "false", 403
+    conn = sqlite3.connect(config['usersDb'])
+    c = conn.cursor()
 
-@user.route('/getinfo')
-def user_getinfo():
-    # TODO: implement returning user info (if logged in) here
-    return "false", 403
+    print(request.form)
+    username = request.form.get('username')
+    password = request.form.get('password')
+
+    if not username or not password:
+        return "ERR", 400
+
+    msg = "ERR"
+    status = 403
+
+    if does_user_exist(username):
+        if verify_password(get_hashed_pw_for_user(username), password):
+            msg = "OK, auth_code: " + get_auth_code_by_user(username)
+            status = 200
+
+    conn.commit()
+    conn.close()
+
+    return msg, status
 
 @user.route('/register', methods = ['POST'])
 def user_register():
+    conn = sqlite3.connect(config['usersDb'])
+    c = conn.cursor()
+
+    print(request.form)
     username = request.form.get('username')
     password = request.form.get('password')
     affiliation = request.form.get('affiliation')
 
-    try:
-      sql = '''INSERT INTO users (username, password, affiliation) VALUES (?, ?, ?)'''
-      c.execute(sql, companies)
-    except sqlite3.IntegrityError as e:
-      print('sqlite error: ', e.args[0]) # column name is not unique
+    if not username or not password or not affiliation:
+        return "ERR", 400
+
+    if not does_user_exist(username):
+        try:
+          sql = '''INSERT INTO users (username, password, affiliation, auth_code) VALUES (?, ?, ?, ?)'''
+          c.execute(sql, (username, hash_password(password), affiliation, str(uuid.uuid4())))
+        except:
+          return "ERR", 500
+    else:
+        return "ERR", 409
     conn.commit()
     conn.close()
 
-    print('done')
-    for user in devices:
-        if dev.udid == udid:
-            # dev.values[value] = 
-            return "OK", 200
-        # device not found
-        return "ERR", 404
-    return "false", 403
+    return "OK", 200
+
+def does_user_exist(username):
+    conn = sqlite3.connect(config['usersDb'])
+    c = conn.cursor()
+
+    c.execute("SELECT * FROM users WHERE username=?", (username,))
+ 
+    rows = c.fetchall()
+
+    ret = False
+    for row in rows:
+        ret = True
+    conn.commit()
+    conn.close()
+    return ret
+
+def get_hashed_pw_for_user(username):
+    conn = sqlite3.connect(config['usersDb'])
+    c = conn.cursor()
+
+    c.execute("SELECT * FROM users WHERE username=?", (username,))
+ 
+    rows = c.fetchall()
+
+    hash_pw = rows[0][2]
+
+    conn.commit()
+    conn.close()
+    return hash_pw
+
+def get_auth_code_by_user(username):
+    conn = sqlite3.connect(config['usersDb'])
+    c = conn.cursor()
+
+    c.execute("SELECT * FROM users WHERE username=?", (username,))
+ 
+    rows = c.fetchall()
+
+    auth_code = rows[0][4]
+
+    conn.commit()
+    conn.close()
+    return auth_code
+
+def get_user_by_auth_code(auth_code):
+    conn = sqlite3.connect(config['usersDb'])
+    c = conn.cursor()
+
+    c.execute("SELECT * FROM users WHERE auth_code=?", (auth_code,))
+ 
+    rows = c.fetchall()
+
+    user_acc = rows[0]
+
+    conn.commit()
+    conn.close()
+    return user_acc
 
 def hash_password(password):
     """Hash a password for storing."""

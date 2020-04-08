@@ -17,7 +17,7 @@ def setup_users_db():
 
     # Create table - USERS
     c.execute('''CREATE TABLE USERS
-             ([id] INTEGER PRIMARY KEY, [username] text, [password] text, [affiliation] text)''')
+             ([id] INTEGER PRIMARY KEY, [username] text, [password] text, [affiliation] text, [auth_code] text)''')
 
     print("Users database created!")
 
