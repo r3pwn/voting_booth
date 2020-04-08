@@ -2,7 +2,8 @@
   "appinfo": [
     {
       "name": "voting-booth-api",
-      "security": "insecure",
+      "security": "secure",
+      "portNum": 8080,
       "version": "v0.0.1",
       "authors": [
         "Greg Willard <gwillard4695@floridapoly.edu>", 
