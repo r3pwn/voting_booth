@@ -118,6 +118,7 @@ def get_user_by_auth_code(auth_code):
     conn.close()
     return user_acc
 
+# secure hashing thing from StackOverflow, because that's a safe way of doing things, right?
 def hash_password(password):
     """Hash a password for storing."""
     salt = hashlib.sha256(os.urandom(60)).hexdigest().encode('ascii')

@@ -1,7 +1,9 @@
 {
   "config": [
     {
-      "thankYouMessage": "Thank you for voting! Your vote will be counted shortly."
+      "resultsDb": "databases/results.db",
+      "thankYouMessage": "Thank you for voting! Your vote will be counted shortly.",
+      "alreadyVotedMessage": "We appreciate your enthusiasm, but it appears you've already voted."
     }
   ]
 }

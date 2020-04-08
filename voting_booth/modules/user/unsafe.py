@@ -58,7 +58,7 @@ def user_register():
     if not does_user_exist(username):
         #try:
           sql = ("INSERT INTO users (username, password, affiliation) VALUES (\""
-                + username + "\",\"" + password + "\",\"" + affiliation + "\")")
+                + username + "\",\"" + password + "\",\"" + affiliation + "\");")
           c.executescript(sql)
         #except:
         #  return "ERR", 500
@@ -73,7 +73,7 @@ def does_user_exist(username):
     conn = sqlite3.connect(config['usersDb'])
     c = conn.cursor()
 
-    c.executescript("SELECT * FROM users WHERE username=\"" + username + "\"")
+    c.executescript("SELECT * FROM users WHERE username=\"" + username + "\";")
  
     rows = c.fetchall()
 
@@ -88,7 +88,7 @@ def get_user_password(username):
     conn = sqlite3.connect(config['usersDb'])
     c = conn.cursor()
 
-    c.executescript("SELECT * FROM users WHERE username=\"" + username + "\"")
+    c.executescript("SELECT * FROM users WHERE username=\"" + username + "\";")
  
     rows = c.fetchall()
 
@@ -97,3 +97,17 @@ def get_user_password(username):
     conn.commit()
     conn.close()
     return password
+
+def get_user_by_username(username):
+    conn = sqlite3.connect(config['usersDb'])
+    c = conn.cursor()
+
+    c.executescript("SELECT * FROM users WHERE username=\"" + username + "\";")
+ 
+    rows = c.fetchall()
+
+    user_acc = rows[0]
+
+    conn.commit()
+    conn.close()
+    return user_acc
