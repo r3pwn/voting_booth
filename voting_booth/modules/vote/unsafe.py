@@ -3,7 +3,7 @@ import json
 
 print("[WARN] @@@ LOADED UNSAFE VOTING MODULE!!! @@@")
 
-CONFIG_FILE = 'voting_booth/modules/vote/config.json'
+CONFIG_FILE = 'voting_booth/modules/vote/config_insecure.json'
 vote = Blueprint('vote', __name__)
 
 with open(CONFIG_FILE) as json_file:

@@ -17,7 +17,6 @@ def user_login():
     conn = sqlite3.connect(config['usersDb'])
     c = conn.cursor()
 
-    print(request.form)
     username = request.form.get('username')
     password = request.form.get('password')
 
@@ -42,7 +41,6 @@ def user_register():
     conn = sqlite3.connect(config['usersDb'])
     c = conn.cursor()
 
-    print(request.form)
     username = request.form.get('username')
     password = request.form.get('password')
     affiliation = request.form.get('affiliation')

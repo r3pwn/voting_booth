@@ -1,0 +1,7 @@
+{
+  "config": [
+    {
+      "resultsDb": "databases/unsafe_results.db"
+    }
+  ]
+}
